@@ -599,7 +599,7 @@ export function Home() {
                     className="w-full border border-cyan-50/20"
                     siteKey={config.turnstileKey}
                     onSuccess={setTurnstileToken}
-                    options={{ theme: "dark", size: "flexible" }}
+                     options={{ theme: "light", size: "flexible" }}
                   />
                 </div>
               </div>
