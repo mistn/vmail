@@ -15,17 +15,6 @@ database_id = "13c0050d-1449-4f9e-a27a-41dbe237eb64"
 # fix: 将迁移目录直接配置在这里，这是 D1 自动迁移的标准做法
 migrations_dir = "worker/drizzle"
 
-# 定义环境变量和密钥
-[vars]
-EMAIL_DOMAIN = "${EMAIL_DOMAIN}"
-TURNSTILE_KEY = "${TURNSTILE_KEY}"
-COOKIES_SECRET = "${COOKIES_SECRET}"
-TURNSTILE_SECRET = "${TURNSTILE_SECRET}"
-PASSWORD = "${PASSWORD}"
-API_RATE_LIMIT_PER_MINUTE = "${API_RATE_LIMIT_PER_MINUTE}"
-SHOW_AFF = "${SHOW_AFF}"
-ENABLE_OPENAPI = "${ENABLE_OPENAPI}"
-
 # 配置邮件处理
 [triggers]
 crons = ["0 * * * *"] # 每小时运行一次清理任务
