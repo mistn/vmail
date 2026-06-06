@@ -1,11 +1,11 @@
-// 这个文件内容直接从您的 _h.privacy.tsx 迁移而来
+// 这个文件内容直接从您�?_h.privacy.tsx 迁移而来
 export function Privacy() {
   return (
-    // 修复：移除 text-black 类，文本颜色将由父组件 InfoModal 控制
+    // 修复：移�?text-black 类，文本颜色将由父组�?InfoModal 控制
     <div>
       <div className="max-w-[1400px] ">
         <p className="mt-8">
-          At Vmail.DEV, we value the privacy of our users and are committed to
+          At Mail.6st.cc.cd, we value the privacy of our users and are committed to
           protecting their personal information. This Privacy Policy outlines
           the practices we follow regarding the collection, use, storage, and
           deletion of data on our one-time email website.
