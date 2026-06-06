@@ -571,11 +571,11 @@ API requests are rate limited based on your API Key configuration. Default limit
                     <label className="block text-sm text-gray-400 mb-2">
                       {t("Verification")}
                     </label>
-                    <div className="[&_iframe]:!w-full h-[65px] max-w-[300px] bg-gray-700 rounded">
+                    <div className="[&_iframe]:!w-full [&_iframe]:!bg-white h-[65px] max-w-[300px] bg-white border border-dashed border-gray-300">
                       <Turnstile
                         siteKey={config.turnstileKey}
                         onSuccess={setTurnstileToken}
-                        options={{ theme: "dark" }}
+                        options={{ theme: "light" }}
                       />
                     </div>
                   </div>

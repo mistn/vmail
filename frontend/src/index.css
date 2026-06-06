@@ -17,6 +17,14 @@
   background: hsla(0, 0%, 59%, 0.524);
 }
 
+/* Turnstile 加载时防止黑底闪现 */
+div[class*="cf-turnstile"] {
+  background: #fff !important;
+}
+iframe[src*="challenges.cloudflare.com"] {
+  background-color: #fff !important;
+}
+
 /* 网格背景样式 */
 .grids {
   background-color: #ffffff;

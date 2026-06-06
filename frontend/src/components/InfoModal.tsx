@@ -12,7 +12,7 @@ interface InfoModalProps {
 export function InfoModal({ showModal, setShowModal, title, children }: InfoModalProps) {
   return (
     // feat: 为 Modal 组件指定 'dark' 主题
-    <Modal showModal={showModal} setShowModal={setShowModal} theme="dark">
+    <Modal showModal={showModal} setShowModal={setShowModal} theme="light">
       {/* 修复：将背景色从白色更改为网站的深色主题，并调整边框颜色 */}
       <div className="w-full max-h-[80vh] flex flex-col bg-white shadow-none md:max-w-3xl md:border md:border-dashed md:border-gray-300">
         {/* 创建一个固定的头部，包含标题和关闭按钮，使其不随内容滚动 */}
