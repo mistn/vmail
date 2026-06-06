@@ -66,19 +66,19 @@ export function Header() {
 
   return (
     <>
-      <header className="fixed top-0 z-20 h-20 w-full px-5 backdrop-blur-xl md:px-10 text-white flex items-center justify-between shadow-sm">
+      <header className="fixed top-0 z-20 h-16 w-full px-5 md:px-10 text-gray-800 flex items-center justify-between border-b border-dashed border-gray-300 bg-white">
         <Link
           to="/"
           className="font-bold flex items-center justify-center gap-3">
           <VmailLogo />
           <button className="cool-btn">
-            <span>VMAIL.DEV</span>
+            <span>6ST.CC.CD</span>
           </button>
         </Link>
         <nav className="flex items-center">
           {/* 导航链接 */}
           <a
-            className="ml-3 md:ml-8"
+            className="ml-3 md:ml-8 text-gray-600 hover:text-gray-900"
             target="_blank"
             rel="noopener noreferrer"
             href="/api-docs">
@@ -86,24 +86,24 @@ export function Header() {
           </a>
           <button
             onClick={() => setShowAboutModal(true)}
-            className="ml-3 md:ml-8 text-sm md:text-base hidden md:block hover:text-cyan-400">
+            className="ml-3 md:ml-8 text-sm md:text-base hidden md:block text-gray-600 hover:text-gray-900">
             {t("About")}
           </button>
           <button
             onClick={() => setShowPrivacyModal(true)}
-            className="ml-3 md:ml-8 text-sm md:text-base hidden md:block hover:text-cyan-400">
+            className="ml-3 md:ml-8 text-sm md:text-base hidden md:block text-gray-600 hover:text-gray-900">
             {t("Privacy")}
           </button>
           <button
             onClick={() => setShowTermsModal(true)}
-            className="ml-3 md:ml-8 text-sm md:text-base hidden md:block hover:text-cyan-400">
+            className="ml-3 md:ml-8 text-sm md:text-base hidden md:block text-gray-600 hover:text-gray-900">
             {t("Terms")}
           </button>
           {/* 语言切换下拉菜单 */}
           <div className="relative ml-3 md:ml-8" ref={langDropdownRef}>
             <button
               onClick={() => setShowLangDropdown(!showLangDropdown)}
-              className="flex items-center gap-1 text-sm hover:text-cyan-400 px-2 py-1 rounded border border-transparent hover:border-cyan-400/30">
+              className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900 px-2 py-1 rounded border border-transparent hover:border-gray-300">
               <span>{currentLang.flag}</span>
               <span className="hidden md:inline">{currentLang.name}</span>
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -111,13 +111,13 @@ export function Header() {
               </svg>
             </button>
             {showLangDropdown && (
-              <div className="absolute right-0 mt-2 w-40 bg-zinc-800 border border-zinc-700 rounded-lg shadow-lg py-1 z-50">
+              <div className="absolute right-0 mt-2 w-40 bg-white border border-dashed border-gray-300 rounded-lg shadow-none py-1 z-50">
                 {languages.map((lang) => (
                   <button
                     key={lang.code}
                     onClick={() => handleLanguageChange(lang.code)}
-                    className={`w-full text-left px-3 py-2 text-sm hover:bg-zinc-700 flex items-center gap-2 ${
-                      lang.code === i18n.language ? "text-cyan-400" : "text-white"
+                    className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-100 flex items-center gap-2 ${
+                      lang.code === i18n.language ? "text-gray-900 font-semibold" : "text-gray-600"
                     }`}>
                     <span>{lang.flag}</span>
                     <span>{lang.name}</span>
@@ -132,7 +132,7 @@ export function Header() {
             target="_blank"
             rel="noopener noreferrer"
             href="https://github.com/oiov/vmail">
-            <button className="whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-transparent hover:bg-accent hover:text-accent-foreground text-md flex h-[32px] w-[85px] cursor-pointer items-center justify-center rounded-md border-2 p-2 font-semibold hover:opacity-50">
+            <button className="whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-transparent hover:bg-gray-100 text-gray-600 text-md flex h-[32px] w-[85px] cursor-pointer items-center justify-center rounded-md border border-dashed border-gray-300 p-2 font-semibold">
               <GithubPlat />
               <div className="ml-1.5 text-sm">Star</div>
             </button>

@@ -6,6 +6,7 @@ fly.toml
 
 .env
 .env*.local
+.dev.vars
 .worktrees
 .claude
 docs/superpowers

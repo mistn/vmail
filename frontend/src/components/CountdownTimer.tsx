@@ -75,7 +75,7 @@ export function CountdownTimer({ expiryTimestamp, onReset }: CountdownTimerProps
 
   return (
     // feat: 将容器改为 flex-row 并添加按钮
-    <div className="flex items-center justify-between gap-2 text-sm text-cyan-400 my-4 p-3 bg-white/5 rounded-md border border-cyan-50/20 shadow-inner">
+    <div className="flex items-center justify-between gap-2 text-sm text-gray-600 my-4 p-3 bg-gray-50 border border-dashed border-gray-300">
       <div className="flex items-center gap-2"> {/* 将图标和文本包裹起来 */}
         <ClockIcon className="w-5 h-5" />
         {timeLeft.expired ? (
@@ -90,7 +90,7 @@ export function CountdownTimer({ expiryTimestamp, onReset }: CountdownTimerProps
       {!timeLeft.expired && (
         <button
           onClick={onReset} // 修改：调用 onReset 回调
-          className="p-1 rounded text-cyan-400 hover:text-cyan-300 focus:outline-none focus:ring-1 focus:ring-cyan-500"
+          className="p-1 rounded text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-400"
           title={t('Reset validity')} // 修改：更新 tooltip 提示文字
         >
           <RefreshIcon className="w-5 h-5" /> {/* 使用刷新图标 */}

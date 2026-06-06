@@ -44,7 +44,7 @@ export default function Leaflet({
         // 修复：使用 clsx 根据 theme 动态设置背景色
         className={clsx(
             "group fixed inset-x-0 bottom-0 z-40 w-screen cursor-grab overflow-y-scroll pb-5 active:cursor-grabbing sm:hidden",
-            theme === 'light' ? 'bg-white' : 'bg-neutral-800/95'
+            theme === 'light' ? 'bg-white' : 'bg-white'
         )}
         style={{ maxHeight: "95%" }}
         initial={{ y: "100%" }}
@@ -60,7 +60,7 @@ export default function Leaflet({
             // 修复：根据 theme 动态设置顶部边框颜色
             className={clsx(
                 "rounded-t-4xl -mb-1 flex h-7 w-full items-center justify-center border-t",
-                theme === 'light' ? 'border-gray-200' : 'border-cyan-50/20'
+                theme === 'light' ? 'border-gray-200' : 'border-gray-200'
             )}
         >
           <div className="-mr-1 h-1 w-6 rounded-full bg-gray-300 transition-all group-active:rotate-12" />

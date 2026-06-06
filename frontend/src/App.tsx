@@ -66,7 +66,7 @@ function App() {
   // 在配置加载完成前，显示加载中状态
   if (!config) {
     return (
-      <div className="bg-[#1f2023] text-white w-screen h-screen flex items-center justify-center">
+      <div className="grids text-gray-800 w-screen h-screen flex items-center justify-center">
         Loading...
       </div>
     );

@@ -108,7 +108,7 @@ export function MailList({
       return (
         <div className="w-full items-center h-full flex-col justify-center flex">
           <Loader />
-          <p className="text-zinc-400 mt-6">{t("Waiting for emails...")}</p>
+          <p className="text-gray-500 mt-6">{t("Waiting for emails...")}</p>
         </div>
       );
     }
@@ -119,7 +119,7 @@ export function MailList({
         <div className="w-full items-center h-full flex-col justify-center flex">
           {/* 修复: 只要地址已创建且邮箱为空，就持续显示加载动画 */}
           <Loader />
-          <p className="text-zinc-400 mt-6">{t("Waiting for emails...")}</p>
+          <p className="text-gray-500 mt-6">{t("Waiting for emails...")}</p>
         </div>
       );
     }
@@ -129,13 +129,13 @@ export function MailList({
       <div key={email.id} className="flex items-center gap-2 mb-1">
         <input
           type="checkbox"
-          className="h-4 w-4 rounded border-neutral-300 bg-neutral-100 data-[state=checked]:border-neutral-900 data-[state=checked]:bg-neutral-600 data-[state=checked]:text-neutral-100 dark:border-neutral-700 dark:bg-neutral-800 dark:data-[state=checked]:border-neutral-300 dark:data-[state=checked]:bg-neutral-300"
+          className="h-4 w-4 rounded border-gray-300 bg-gray-100 data-[state=checked]:border-gray-600 data-[state=checked]:bg-gray-600 data-[state=checked]:text-white"
           checked={selectedIds.includes(email.id)}
           onChange={() => handleSelect(email.id)}
         />
         <div
           onClick={() => onSelectEmail(email)}
-          className="cursor-pointer flex-1 flex flex-col items-start gap-2 rounded-lg border border-zinc-600 p-3 text-left text-sm transition-all hover:bg-zinc-700">
+          className="cursor-pointer flex-1 flex flex-col items-start gap-2 rounded-lg border border-dashed border-gray-300 p-3 text-left text-sm transition-all hover:bg-gray-50">
           <div className="flex w-full flex-col gap-1">
             <div className="flex items-center">
               <div className="flex items-center gap-2">
@@ -154,7 +154,7 @@ export function MailList({
             </div>
             <div className="text-xs font-medium">{email.subject}</div>
           </div>
-          <div className="line-clamp-2 text-xs text-zinc-300 font-normal w-full">
+          <div className="line-clamp-2 text-xs text-gray-500 font-normal w-full">
             {(email.text || email.html || "").substring(0, 300)}
           </div>
         </div>
@@ -163,14 +163,14 @@ export function MailList({
   };
 
   return (
-    <div className="rounded-md border border-cyan-50/20 text-white">
+    <div className="rounded-md border border-dashed border-gray-300 text-gray-800">
       {/* 邮件列表头部 */}
-      <div className="w-full rounded-t-md p-2 flex items-center bg-zinc-800 text-zinc-200 gap-2">
+      <div className="w-full rounded-t-md p-2 flex items-center bg-gray-50 text-gray-700 gap-2 border-b border-dashed border-gray-300">
         <div className="flex items-center justify-start gap-2 font-bold">
           <MailIcon className="size-6" />
           {t("INBOX")}
           {isAddressCreated && emails.length > 0 && !selectedEmail && (
-            <span className="inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-zinc-600 rounded-full">
+              <span className="inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-gray-600 rounded-full">
               {emails.length}
             </span>
           )}
@@ -178,7 +178,7 @@ export function MailList({
           {selectedEmail && (
             <button
               onClick={onCloseDetail}
-              className="flex items-center gap-1 text-sm font-semibold text-cyan-400 hover:text-cyan-300 ml-2">
+              className="flex items-center gap-1 text-sm font-semibold text-gray-600 hover:text-gray-900 ml-2">
               <ArrowUturnLeft />
               {t("Return to email list")}
             </button>
@@ -192,14 +192,14 @@ export function MailList({
             <>
               <button
                 onClick={onExpand}
-                className="p-1 rounded text-cyan-400 hover:text-cyan-300"
+                className="p-1 rounded text-gray-600 hover:text-gray-900"
                 title={t("Expand")}>
                 <Expand className="w-5 h-5" />
               </button>
               <button
                 onClick={() => onDelete([selectedEmail.id])}
                 disabled={isDeleting}
-                className="p-1 rounded text-red-500 disabled:text-gray-500 hover:text-red-400"
+                className="p-1 rounded text-rose-600 disabled:text-gray-300 hover:text-rose-500"
                 title={t("Delete")}>
                 <TrashIcon className="w-5 h-5" />
               </button>
@@ -209,7 +209,7 @@ export function MailList({
               {/* 列表页模式下的操作按钮 */}
               {showViewPasswordButton && (
                 <button
-                  className="p-1 rounded text-cyan-400 hover:text-cyan-300"
+                  className="p-1 rounded text-gray-600 hover:text-gray-900"
                   title={t("View password")}
                   onClick={onShowPassword}>
                   <PasswordIcon className="w-5 h-5" />
@@ -219,7 +219,7 @@ export function MailList({
                 <>
                   <input
                     type="checkbox"
-                    className="h-4 w-4 rounded bg-zinc-700 border-zinc-600 text-cyan-600 focus:ring-cyan-500"
+                    className="h-4 w-4 rounded bg-gray-100 border-gray-300 text-gray-600 focus:ring-gray-400"
                     title="全选"
                     checked={
                       selectedIds.length === emails.length && emails.length > 0
@@ -229,7 +229,7 @@ export function MailList({
                   <button
                     onClick={() => onDelete(selectedIds)}
                     disabled={selectedIds.length === 0 || isDeleting}
-                    className="p-1 rounded text-red-500 disabled:text-gray-500 hover:text-red-400"
+                    className="p-1 rounded text-rose-600 disabled:text-gray-300 hover:text-rose-500"
                     title="删除选中">
                     <TrashIcon className="w-5 h-5" />
                   </button>

@@ -66,7 +66,7 @@ export function Modal({
           style={{
             backdropFilter: "blur(4px)",
             WebkitBackdropFilter: "blur(4px)",
-            backgroundColor: "rgba(0, 0, 0, 0.4)",
+            backgroundColor: "rgba(255, 255, 255, 0.6)",
           }}
         >
           <div

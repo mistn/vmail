@@ -299,7 +299,7 @@ API requests are rate limited based on your API Key configuration. Default limit
   };
 
   return (
-    <div className="min-h-screen bg-[#1f2023] text-white py-8 px-4 md:px-8 mt-16">
+    <div className="min-h-screen text-gray-800 py-8 px-4 md:px-8 mt-16">
       {config.showAff && showPromoModal && (
         <InfoModal
           showModal={showPromoModal}
@@ -442,8 +442,8 @@ API requests are rate limited based on your API Key configuration. Default limit
       )}
       <div className="max-w-4xl mx-auto" ref={contentRef}>
         {/* Header */}
-        <div className="mb-8 pb-6 border-b border-gray-700">
-          <h1 className="text-3xl font-bold text-cyan-400 mb-2">
+        <div className="mb-8 pb-6 border-b border-dashed border-gray-300">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
             {t("API Documentation")}
           </h1>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
@@ -475,7 +475,7 @@ API requests are rate limited based on your API Key configuration. Default limit
             <button
               type="button"
               onClick={() => setShowPromoModal(true)}
-              className="mt-4 text-left text-sm text-cyan-400 hover:text-cyan-300 transition-colors underline underline-offset-4 decoration-cyan-500/60">
+              className="mt-4 text-left text-sm text-gray-600 hover:text-gray-900 transition-colors underline underline-offset-4 decoration-gray-400">
               Vmail & NBility 联动注册送 Claude Code、Codex 免费额度
             </button>
           )}

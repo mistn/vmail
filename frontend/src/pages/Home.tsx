@@ -130,16 +130,16 @@ export function Home() {
       toast(
         (toastInstance) => (
           // 优化：为弹窗添加独立的标题栏和关闭按钮，并调整整体样式
-          <div className="w-full max-w-lg p-4 bg-slate-800 text-white rounded-lg shadow-lg border border-slate-700">
+          <div className="w-full max-w-lg p-4 bg-white text-gray-800 rounded-lg border border-dashed border-gray-300">
             {/* 标题栏：包含图标、标题和关闭按钮 */}
-            <div className="flex items-center justify-between pb-2 mb-3 border-b border-slate-700">
+            <div className="flex items-center justify-between pb-2 mb-3 border-b border-dashed border-gray-300">
               <div className="flex items-center gap-2">
-                <PasswordIcon className="h-6 w-6 text-cyan-400" />
+                <PasswordIcon className="h-6 w-6 text-gray-600" />
                 <h3 className="text-lg font-semibold">{t("View password")}</h3>
               </div>
               <button
                 onClick={() => toast.dismiss(toastInstance.id)}
-                className="p-1 rounded-full text-gray-400 hover:bg-slate-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="p-1 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400"
                 aria-label="Close">
                 <Close className="h-5 w-5" />
               </button>
@@ -147,16 +147,16 @@ export function Home() {
 
             {/* 内容区域 */}
             <div>
-              <p className="text-sm text-gray-300">
+              <p className="text-sm text-gray-600">
                 {t("Save your password and continue using this email in 1 day")}
               </p>
-              <div className="mt-2 flex items-center text-sm bg-slate-700 px-2 py-1 rounded">
-                <span className="flex-1 font-mono break-all text-gray-100">
+              <div className="mt-2 flex items-center text-sm bg-gray-100 px-2 py-1 rounded">
+                <span className="flex-1 font-mono break-all text-gray-800">
                   {password}
                 </span>
                 <CopyButton text={password} className="p-1" />
               </div>
-              <p className="mt-3 text-xs text-yellow-400">
+              <p className="mt-3 text-xs text-gray-500">
                 {t(
                   "Remember your password, otherwise your email will expire and cannot be retrieved",
                 )}
@@ -512,41 +512,41 @@ export function Home() {
           </div>
         </InfoModal>
       )}
-      <div className="flex flex-col text-white items-start w-full md:w-[350px] mx-auto gap-2">
+      <div className="flex flex-col items-start w-full md:w-[350px] mx-auto gap-2 text-gray-800">
         {/* 左侧信息面板 */}
-        <div className="w-full mb-4 md:max-w-[350px] shrink-0 group group-hover:before:duration-500 group-hover:after:duration-500 after:duration-500 hover:border-cyan-600 hover:before:[box-shadow:_20px_20px_20px_30px_#a21caf] duration-500 before:duration-500 hover:duration-500 hover:after:-right-8 hover:before:right-12 hover:before:-bottom-8 hover:before:blur origin-left hover:decoration-2 relative bg-neutral-800 h-full border text-left p-4 rounded-lg overflow-hidden border-cyan-50/20 before:absolute before:w-12 before:h-12 before:content[''] before:right-1 before:top-1 before:z-10 before:bg-violet-500 before:rounded-full before:blur-lg  after:absolute after:z-10 after:w-20 after:h-20 after:content['']  after:bg-rose-300 after:right-8 after:top-3 after:rounded-full after:blur-lg">
-          <h1 className="text-gray-50 text-xl font-bold mb-3 group-hover:text-cyan-500 duration-500">
+        <div className="w-full mb-4 md:max-w-[350px] shrink-0 border border-dashed border-gray-300 p-4 bg-white">
+          <h1 className="text-gray-800 text-xl font-bold mb-3">
             {t("Virtual Temporary Email")}
           </h1>
           {config.showAff && (
             <button
               type="button"
               onClick={() => setShowPromoModal(true)}
-              className="mb-6 text-left text-sm text-cyan-400 hover:text-cyan-300 transition-colors underline underline-offset-4 decoration-cyan-500/60">
+              className="mb-6 text-left text-sm text-gray-600 hover:text-gray-900 transition-colors underline underline-offset-4 decoration-gray-400">
               Vmail & NBility 联动注册送 Claude Code、Codex 免费额度
             </button>
           )}
-          <div className="flex flex-col gap-4 text-sm text-gray-200">
+          <div className="flex flex-col gap-4 text-sm text-gray-600">
             <a
               href="https://github.com/oiov/vmail"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center after:content-['↗'] gap-1.5 hover:text-cyan-400 transition-colors cursor-pointer">
-              <CodeBracketIcon className="size-5 text-blue-400" />{" "}
+              className="flex items-center after:content-['↗'] gap-1.5 hover:text-gray-900 transition-colors cursor-pointer">
+              <CodeBracketIcon className="size-5 text-gray-500" />{" "}
               {t("Open Source")}
             </a>
             <div className="flex items-center gap-1.5">
-              <ServerIcon className="size-5 text-blue-400" />
+              <ServerIcon className="size-5 text-gray-500" />
               {t("Stable - 1M+ emails processed")}
             </div>
             <Link
               to="/api-docs"
-              className="flex items-center after:content-['↗'] gap-1.5 hover:text-cyan-400 transition-colors cursor-pointer">
-              <ApiIcon className="size-5 text-blue-400" />
+              className="flex items-center after:content-['↗'] gap-1.5 hover:text-gray-900 transition-colors cursor-pointer">
+              <ApiIcon className="size-5 text-gray-500" />
               {t("Open RESTful API")}
             </Link>
             <div className="flex items-center gap-1.5">
-              <GlobeAltIcon className="size-5 text-blue-400" />
+              <GlobeAltIcon className="size-5 text-gray-500" />
               {t("Multi-domain configurable")}
             </div>
           </div>
@@ -558,7 +558,7 @@ export function Home() {
             <div className="mb-4 font-semibold text-sm">
               {t("Email address")}
             </div>
-            <div className="flex items-center text-zinc-100 bg-white/10 backdrop-blur-xl shadow-inner px-4 py-4 rounded-md w-full">
+            <div className="flex items-center text-gray-800 bg-gray-50 px-4 py-4 rounded-md w-full border border-dashed border-gray-300">
               <span className="truncate">{address}</span>
               <CopyButton text={address} className="p-1 rounded-md ml-auto" />
             </div>
@@ -571,7 +571,7 @@ export function Home() {
             )}
             <button
               onClick={handleStopAddress}
-              className="py-2.5 rounded-md w-full bg-cyan-600 hover:opacity-90 disabled:cursor-not-allowed disabled:bg-zinc-500">
+              className="py-2.5 text-gray-800 rounded-md w-full bg-gray-200 hover:bg-gray-300 border border-dashed border-gray-300 disabled:cursor-not-allowed disabled:bg-gray-100">
               {t("Stop")}
             </button>
           </div>
@@ -583,7 +583,7 @@ export function Home() {
               <select
                 value={selectedDomain}
                 onChange={(e) => setSelectedDomain(e.target.value)}
-                className="w-full p-2.5 rounded-md bg-white/10 text-white border border-cyan-50/20">
+                className="w-full p-2.5 rounded-md bg-white text-gray-800 border border-dashed border-gray-300">
                 {config.emailDomain.map((domain) => (
                   <option key={domain} value={domain} className="text-black">
                     @{domain}
@@ -607,13 +607,13 @@ export function Home() {
             <button
               onClick={handleCreateAddress}
               disabled={config.turnstileEnabled && !turnstileToken}
-              className="py-2.5 rounded-md w-full bg-cyan-600 hover:opacity-90 disabled:cursor-not-allowed disabled:bg-zinc-500">
+              className="py-2.5 text-white rounded-md w-full bg-gray-800 hover:bg-gray-700 disabled:cursor-not-allowed disabled:bg-gray-300">
               {t("Create temporary email")}
             </button>
             <p
-              className="mt-4 text-sm text-cyan-500 cursor-pointer"
+              className="mt-4 text-sm text-gray-600 cursor-pointer hover:text-gray-900"
               onClick={() => setShowPasswordModal(true)}>
-              <PasswordIcon className="inline-block w-4 h-4 mr-2" />
+              <PasswordIcon className="inline-block w-4 h-4 mr-2 text-gray-500" />
               {t("Have a password? Login.")}
             </p>
           </div>
