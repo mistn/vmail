@@ -1,11 +1,11 @@
-// 这个文件内容直接从您�?_h.about.tsx 迁移而来
+// 这个文件内容直接从您�?_h.about.tsx 迁移而来
 export function About() {
   return (
-    // 修复：移�?text-black 类，文本颜色将由父组�?InfoModal 控制
+    // 修复：移�?text-black 类，文本颜色将由父组�?InfoModal 控制
     <div>
       <div className="max-w-[1400px] ">
         <p className="mt-8">
-          <strong>Mail.6st.cc.cd </strong> is a Virtual temporary email service.{" "}
+          <strong>mail.2731515.xyz </strong> is a Virtual temporary email service.{" "}
         </p>
         <p className="mt-4">
           You can get a temporary email without revealing any personal
@@ -32,8 +32,8 @@ export function About() {
         </h2>
         <p className="mt-4">
           All copyrights belong to{" "}
-          <a href="https://Mail.6st.cc.cd" rel="nofollow">
-            <strong>Mail.6st.cc.cd </strong>{" "}
+          <a href="https://mail.2731515.xyz/" rel="nofollow">
+            <strong>mail.2731515.xyz </strong>{" "}
           </a>
           .{" "}
         </p>

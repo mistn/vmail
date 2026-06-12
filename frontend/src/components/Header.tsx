@@ -72,7 +72,7 @@ export function Header() {
           className="font-bold flex items-center justify-center gap-3">
           <VmailLogo />
           <button className="cool-btn">
-            <span>MAIL.6ST.CC.CD</span>
+            <span>MAIL.2731515.XYZ</span>
           </button>
         </Link>
         <nav className="flex items-center">
