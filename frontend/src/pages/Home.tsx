@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Turnstile } from "@marsidev/react-turnstile";
-import randomName from "@scaleway/random-name";
 import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
@@ -16,11 +15,12 @@ import {
   getMailboxMeta,
   deleteEmails,
   loginByPassword,
+  refreshMailboxToken,
   verifyTurnstile,
 } from "../services/api.ts";
 import { useConfig } from "../hooks/useConfig.ts";
 // feat: 导入加密函数
-import { getRandomCharacter, encrypt } from "../lib/utlis.ts";
+import { encrypt } from "../lib/utlis.ts";
 
 // feat: 导入密码模态框和相关 hook
 import { usePasswordModal } from "../components/password.tsx";
@@ -40,6 +40,8 @@ import { InfoModal } from "../components/InfoModal.tsx";
 import { MailDetail } from "./MailDetail.tsx";
 // feat: 导入倒计时组件
 import { CountdownTimer } from "../components/CountdownTimer.tsx";
+// feat: 导入发件弹窗
+import { useSenderModal } from "../components/sender.tsx";
 
 export function Home() {
   const config = useConfig();
@@ -49,6 +51,9 @@ export function Home() {
   // 状态管理
   const [address, setAddress] = useState<string | undefined>(() =>
     Cookies.get("userMailbox"),
+  );
+  const [mailboxToken, setMailboxToken] = useState<string>(
+    () => Cookies.get("mailboxToken") || "",
   );
   // feat: 新增状态，用于存储邮箱过期时间戳
   const [expiryTimestamp, setExpiryTimestamp] = useState<number | undefined>(
@@ -76,6 +81,13 @@ export function Home() {
   const { PasswordModal, setShowPasswordModal } = usePasswordModal();
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
+  // feat: 初始化发件弹窗
+  const { SenderModal, setShowSenderModal } = useSenderModal(
+    address || "",
+    mailboxToken,
+  );
+  const canSendEmails = Boolean(address && mailboxToken && config.sendChannel);
+
   // feat: 新增状态，用于跟踪当前邮箱地址是否曾经收到过邮件
   const [hasReceivedEmail, setHasReceivedEmail] = useState(false);
 
@@ -85,22 +97,26 @@ export function Home() {
     isLoading,
     isFetching,
     refetch,
-  } = useQuery<Email[]>({
+    error: emailsError,
+  } = useQuery<Email[], Error>({
     queryKey: ["emails", address],
     queryFn: () => getEmails(address!, 50),
     enabled: !!address, // 只有在 address 存在时才执行查询
     refetchInterval: false,
-    onError: (err: Error) => {
-      toast.error(`${t("Failed to get emails")}: ${err.message}`, {
-        duration: 5000,
-      });
-    },
     retry: false, // 失败后不自动重试
   });
 
+  useEffect(() => {
+    if (emailsError) {
+      toast.error(`${t("Failed to get emails")}: ${emailsError.message}`, {
+        duration: 5000,
+      });
+    }
+  }, [emailsError, t]);
+
   const mailboxMetaSignatureRef = useRef<string | null>(null);
 
-  useQuery({
+  const { data: mailboxMeta } = useQuery({
     queryKey: ["emails-meta", address],
     queryFn: () => getMailboxMeta(address!),
     enabled: !!address,
@@ -109,19 +125,24 @@ export function Home() {
     refetchIntervalInBackground: false,
     refetchOnWindowFocus: true,
     retry: false,
-    onSuccess: (meta) => {
-      const signature = `${meta.count}:${meta.latestEmailCreatedAt ?? ""}`;
-      if (mailboxMetaSignatureRef.current === null) {
-        mailboxMetaSignatureRef.current = signature;
-        return;
-      }
-
-      if (mailboxMetaSignatureRef.current !== signature) {
-        mailboxMetaSignatureRef.current = signature;
-        queryClient.invalidateQueries({ queryKey: ["emails", address] });
-      }
-    },
   });
+
+  useEffect(() => {
+    if (!mailboxMeta) {
+      return;
+    }
+
+    const signature = `${mailboxMeta.count}:${mailboxMeta.latestEmailCreatedAt ?? ""}`;
+    if (mailboxMetaSignatureRef.current === null) {
+      mailboxMetaSignatureRef.current = signature;
+      return;
+    }
+
+    if (mailboxMetaSignatureRef.current !== signature) {
+      mailboxMetaSignatureRef.current = signature;
+      queryClient.invalidateQueries({ queryKey: ["emails", address] });
+    }
+  }, [address, mailboxMeta, queryClient]);
 
   // feat: 将密码提示封装成一个函数，并用 useCallback 包裹以优化性能。
   // refactor: 移除自定义的 toast.custom, 使用全局 toast
@@ -226,15 +247,23 @@ export function Home() {
     }
 
     try {
-      await verifyTurnstile(requireTurnstile ? turnstileToken : undefined);
-      // feat: 使用选定的域名创建邮箱
-      const mailbox = `${randomName("", getRandomCharacter())}@${selectedDomain}`;
+      const authorization = await verifyTurnstile(
+        selectedDomain,
+        requireTurnstile ? turnstileToken : undefined,
+      );
+      const mailbox = authorization.mailbox;
       // feat: 计算并存储过期时间戳 (当前时间 + 24小时)
       const now = Date.now();
       const expires = now + 24 * 60 * 60 * 1000;
       Cookies.set("userMailbox", mailbox, { expires: 1 }); // cookie 有效期1天
       Cookies.set("emailExpiry", expires.toString(), { expires: 1 }); // 存储过期时间戳
+      if (authorization.mailboxToken) {
+        Cookies.set("mailboxToken", authorization.mailboxToken, { expires: 1 });
+      } else {
+        Cookies.remove("mailboxToken");
+      }
       setAddress(mailbox);
+      setMailboxToken(authorization.mailboxToken || "");
       setExpiryTimestamp(expires); // 更新状态
       setHasReceivedEmail(false); // 重置接收邮件状态
       toast.success(t("Email created successfully")); // feat: 使用全局 toast 提示
@@ -247,9 +276,11 @@ export function Home() {
   // 停止使用当前邮箱地址
   const handleStopAddress = () => {
     Cookies.remove("userMailbox");
+    Cookies.remove("mailboxToken");
     // feat: 移除过期时间 cookie
     Cookies.remove("emailExpiry");
     setAddress(undefined);
+    setMailboxToken("");
     mailboxMetaSignatureRef.current = null;
     setHasReceivedEmail(false); // 重置状态
     setSelectedEmail(null); // 清除选中的邮件
@@ -264,7 +295,18 @@ export function Home() {
   };
 
   // 修改：将延长邮箱有效期改为重置邮箱有效期
-  const handleResetExpiry = useCallback(() => {
+  const handleResetExpiry = useCallback(async () => {
+    if (mailboxToken) {
+      try {
+        const refreshedToken = await refreshMailboxToken(mailboxToken);
+        Cookies.set("mailboxToken", refreshedToken, { expires: 1 });
+        setMailboxToken(refreshedToken);
+      } catch {
+        toast.error(t("SEND_UNAUTHORIZED"));
+        return;
+      }
+    }
+
     // feat: 计算新的过期时间戳 (当前时间 + 24小时)
     const newExpiry = Date.now() + 24 * 60 * 60 * 1000;
     // 计算新的 Cookie 过期时间（相对于当前时间1天）
@@ -275,7 +317,7 @@ export function Home() {
     }); // 更新 Cookie，有效期设为从现在起1天
     setExpiryTimestamp(newExpiry); // 更新状态
     toast.success(t("Validity reset successfully")); // 修改：显示重置成功提示
-  }, [t]); // 依赖项仅包含 t，因为函数内部不再依赖 expiryTimestamp
+  }, [mailboxToken, t]);
 
   // 删除邮件的 useMutation hook
   const deleteMutation = useMutation({
@@ -314,7 +356,13 @@ export function Home() {
       const expires = now + 24 * 60 * 60 * 1000;
       Cookies.set("userMailbox", data.address, { expires: 1 });
       Cookies.set("emailExpiry", expires.toString(), { expires: 1 });
+      if (data.mailboxToken) {
+        Cookies.set("mailboxToken", data.mailboxToken, { expires: 1 });
+      } else {
+        Cookies.remove("mailboxToken");
+      }
       setAddress(data.address);
+      setMailboxToken(data.mailboxToken || "");
       setExpiryTimestamp(expires); // 更新状态
       setShowPasswordModal(false); // 关闭模态框
       toast.success(t("Login successful"));
@@ -352,6 +400,7 @@ export function Home() {
   return (
     <div className="h-full flex flex-col gap-4 md:flex-row justify-center items-start mt-24 mx-6 md:mx-10">
       <PasswordModal onLogin={handleLogin} isLoggingIn={isLoggingIn} />
+      <SenderModal />
       {selectedEmail && (
         <InfoModal
           showModal={showEmailModal}
@@ -367,7 +416,7 @@ export function Home() {
         <InfoModal
           showModal={showPromoModal}
           setShowModal={setShowPromoModal}
-          title="🎉 Vmail & NBility 联动福利">
+          title="🎉 Vmail & Nbility 联动福利">
           <div className="space-y-4 text-gray-200">
             {/* 主标题 */}
             <div className="text-center">
@@ -424,7 +473,9 @@ export function Home() {
                   <span className="text-purple-400">export</span>{" "}
                   <span className="text-cyan-400">ANTHROPIC_BASE_URL</span>
                   <span className="text-white">=</span>
-                  <span className="text-green-400">"https://nbility.dev"</span>
+                  <span className="text-green-400">
+                    "https://api.nbility.ai"
+                  </span>
                 </div>
                 <div>
                   <span className="text-purple-400">export</span>{" "}
@@ -440,66 +491,10 @@ export function Home() {
               </div>
             </div>
 
-            {/* 按次套餐展示 */}
-            <div className="space-y-2">
-              <h3 className="text-xs font-semibold text-white flex items-center gap-1.5">
-                <span className="text-cyan-400">💰</span> 热门按次套餐
-              </h3>
-              <div className="grid grid-cols-3 gap-2">
-                {/* Claude Nano Day */}
-                <div className="bg-slate-700/50 rounded-lg p-2.5 text-center border border-slate-600/50 hover:border-cyan-500/50 transition-colors">
-                  <div className="text-[10px] text-gray-400 mb-1">体验</div>
-                  <div className="text-sm font-bold text-white">¥6</div>
-                  <div className="text-[10px] text-cyan-400 mt-0.5">
-                    100次/天
-                  </div>
-                  <div className="text-[10px] text-gray-500 mt-0.5">日卡</div>
-                </div>
-                {/* Claude Mini Plus */}
-                <div className="bg-slate-700/50 rounded-lg p-2.5 text-center border border-cyan-500/50 relative">
-                  <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 bg-cyan-500 text-[8px] text-white px-1.5 py-0.5 rounded-full font-semibold">
-                    推荐
-                  </div>
-                  <div className="text-[10px] text-gray-400 mb-1">入门</div>
-                  <div className="text-sm font-bold text-white">
-                    <span className="line-through text-gray-500 text-[10px]">
-                      ¥796
-                    </span>{" "}
-                    ¥398
-                  </div>
-                  <div className="text-[10px] text-cyan-400 mt-0.5">
-                    1000次/天
-                  </div>
-                  <div className="text-[10px] text-gray-500 mt-0.5">
-                    月付·5折
-                  </div>
-                </div>
-                {/* Claude Premium */}
-                <div className="bg-slate-700/50 rounded-lg p-2.5 text-center border border-slate-600/50 hover:border-cyan-500/50 transition-colors">
-                  <div className="text-[10px] text-gray-400 mb-1">旗舰</div>
-                  <div className="text-sm font-bold text-white">
-                    <span className="line-through text-gray-500 text-[10px]">
-                      ¥1598
-                    </span>{" "}
-                    ¥799
-                  </div>
-                  <div className="text-[10px] text-cyan-400 mt-0.5">
-                    3000次/天
-                  </div>
-                  <div className="text-[10px] text-gray-500 mt-0.5">
-                    月付·5折
-                  </div>
-                </div>
-              </div>
-              <p className="text-[10px] text-gray-500 text-center">
-                支持 Claude Opus 4.6 / Sonnet 4.6 等全系模型
-              </p>
-            </div>
-
             {/* CTA 按钮 - 更紧凑 */}
             <div className="pt-1">
               <a
-                href="https://nbility.dev/register?aff=Dptp"
+                href="https://nbility.ai/auth/register?aff=Dptp"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block w-full text-center rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 px-5 py-3 font-bold text-white shadow-lg shadow-cyan-500/50 hover:shadow-cyan-500/70 hover:scale-[1.02] transition-all duration-200">
@@ -523,7 +518,6 @@ export function Home() {
               type="button"
               onClick={() => setShowPromoModal(true)}
               className="mb-6 text-left text-sm text-gray-600 hover:text-gray-900 transition-colors underline underline-offset-4 decoration-gray-400">
-              Vmail & NBility 联动注册送 Claude Code、Codex 免费额度
             </button>
           )}
           <div className="flex flex-col gap-4 text-sm text-gray-600">
@@ -646,6 +640,8 @@ export function Home() {
           selectedEmail={selectedEmail}
           onCloseDetail={handleCloseDetail}
           onExpand={handleExpandEmail} // feat: 传递展开邮件的回调
+          canSendEmails={canSendEmails}
+          onOpenSender={() => setShowSenderModal(true)} // 打开发件弹窗
         />
       </div>
     </div>
