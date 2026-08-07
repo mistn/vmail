@@ -43,7 +43,7 @@ export function ApiDocs() {
   const handleCopyMarkdown = () => {
     const md = `# Vmail API Documentation
 
-RESTful API for programmatic access to https://vmail.dev temporary email services.
+RESTful API for programmatic access to https://mail.2731515.xyz temporary email services.
 
 ## Authentication
 
@@ -62,7 +62,7 @@ Authorization: Bearer your-api-key
 ## Base URL
 
 \`\`\`
-https://vmail.dev/api/v1
+https://mail.2731515.xyz/api/v1
 \`\`\`
 
 ## Endpoints
@@ -216,7 +216,7 @@ All errors follow a consistent format:
 
 \`\`\`bash
 # Create a new mailbox
-curl -X POST https://vmail.dev/api/v1/mailboxes \\
+curl -X POST https://mail.2731515.xyz/api/v1/mailboxes \\
   -H "X-API-Key: your-api-key" \\
   -H "Content-Type: application/json" \\
   -d '{"domain": "example.com"}'
@@ -224,11 +224,11 @@ curl -X POST https://vmail.dev/api/v1/mailboxes \\
 # Response: { "data": { "id": "abc123", "address": "...", ... } }
 
 # Check inbox
-curl https://vmail.dev/api/v1/mailboxes/abc123/messages \\
+curl https://mail.2731515.xyz/api/v1/mailboxes/abc123/messages \\
   -H "X-API-Key: your-api-key"
 
 # Get specific message
-curl https://vmail.dev/api/v1/mailboxes/abc123/messages/msg_001 \\
+curl https://mail.2731515.xyz/api/v1/mailboxes/abc123/messages/msg_001 \\
   -H "X-API-Key: your-api-key"
 \`\`\`
 
@@ -569,7 +569,7 @@ API requests are rate limited based on your API Key configuration. Default limit
           </h2>
           <div className="bg-gray-800 rounded-lg p-4">
             <pre className="bg-gray-900 p-3 rounded overflow-x-auto">
-              <code className="text-yellow-400">https://vmail.dev/api/v1</code>
+              <code className="text-yellow-400">https://mail.2731515.xyz/api/v1</code>
             </pre>
           </div>
         </section>
@@ -880,7 +880,7 @@ API requests are rate limited based on your API Key configuration. Default limit
             </h4>
             <pre className="bg-gray-900 p-3 rounded overflow-x-auto text-sm">
               <code className="text-gray-300">{`# Create a new mailbox
-curl -X POST https://vmail.dev/api/v1/mailboxes \\
+curl -X POST https://mail.2731515.xyz/api/v1/mailboxes \\
   -H "X-API-Key: your-api-key" \\
   -H "Content-Type: application/json" \\
   -d '{"domain": "example.com"}'
@@ -888,11 +888,11 @@ curl -X POST https://vmail.dev/api/v1/mailboxes \\
 # Response: { "data": { "id": "abc123", "address": "...", ... } }
 
 # Check inbox
-curl https://vmail.dev/api/v1/mailboxes/abc123/messages \\
+curl https://mail.2731515.xyz/api/v1/mailboxes/abc123/messages \\
   -H "X-API-Key: your-api-key"
 
 # Get specific message
-curl https://vmail.dev/api/v1/mailboxes/abc123/messages/msg_001 \\
+curl https://mail.2731515.xyz/api/v1/mailboxes/abc123/messages/msg_001 \\
   -H "X-API-Key: your-api-key"`}</code>
             </pre>
           </div>

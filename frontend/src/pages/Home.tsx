@@ -522,7 +522,7 @@ export function Home() {
           )}
           <div className="flex flex-col gap-4 text-sm text-gray-600">
             <a
-              href="https://github.com/oiov/vmail"
+              href="https://github.com/mistn/vmail"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center after:content-['↗'] gap-1.5 hover:text-gray-900 transition-colors cursor-pointer">

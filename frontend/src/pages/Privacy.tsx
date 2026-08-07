@@ -1,7 +1,7 @@
-// 这个文件内容直接从您�?_h.privacy.tsx 迁移而来
+// 这个文件内容直接从您�?_h.privacy.tsx 迁移而来
 export function Privacy() {
   return (
-    // 修复：移�?text-black 类，文本颜色将由父组�?InfoModal 控制
+    // 修复：移�?text-black 类，文本颜色将由父组�?InfoModal 控制
     <div>
       <div className="max-w-[1400px] ">
         <p className="mt-8">

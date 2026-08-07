@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { VmailLogo } from "./icons/vmail.tsx";
 import { useTranslation } from "react-i18next";
-import GithubPlat from "./icons/GitHubPlat.tsx";
 import { useState, useRef, useEffect } from "react";
 import { InfoModal } from "./InfoModal.tsx";
 import { About } from "../pages/About.tsx";
@@ -126,17 +125,6 @@ export function Header() {
               </div>
             )}
           </div>
-          {/* GitHub 链接按钮 */}
-          <a
-            className="ml-3 md:ml-8"
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://github.com/oiov/vmail">
-            <button className="whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-transparent hover:bg-gray-100 text-gray-600 text-md flex h-[32px] w-[85px] cursor-pointer items-center justify-center rounded-md border border-dashed border-gray-300 p-2 font-semibold">
-              <GithubPlat />
-              <div className="ml-1.5 text-sm">Star</div>
-            </button>
-          </a>
         </nav>
       </header>
 
